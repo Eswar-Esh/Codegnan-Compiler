@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin DashBoard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Users Data</h1>
+        <div class="text-center mt-4">
+            
+            <a href="{{url_for('adminlogin')}}" class="btn btn-primary btn-sm" >Logout</a>
+        </div><br>
+
+        <!-- Search bar for filtering questions -->
+        <div class="mb-4">
+            <input type="text" id="search" class="form-control" placeholder="Search questions..." onkeyup="filterQuestions()">
+        </div>
+        
+        <!-- Table to display the list of coding questions -->
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>User Name</th>
+                        <th>Ph Number</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if users %}
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.Name }}</td>
+                            <td>{{ user.Username }}</td>
+                            <td>{{ user.ph_number }}</td>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">No questions found</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Button to add a new question -->
+        
+    </div>
+
+ 
+
+    <!-- Bootstrap JS for improved interactivity -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

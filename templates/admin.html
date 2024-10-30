@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin DashBoard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">List of Coding Questions</h1>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('add_question') }}" class="btn btn-success">Add New Question</a>
+            <a href="{{url_for('adminlogin')}}" class="btn btn-primary btn-sm" >Logout</a>
+        </div><br>
+
+        <!-- Search bar for filtering questions -->
+        <div class="mb-4">
+            <input type="text" id="search" class="form-control" placeholder="Search questions..." onkeyup="filterQuestions()">
+        </div>
+        
+        <!-- Table to display the list of coding questions -->
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Question</th>
+                        <th>Testcase Input</th>
+                        <th>Testcase Output</th>
+                        <th>Language</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if questions %}
+                        {% for question in questions %}
+                        <tr>
+                            <td>{{ question._id }}</td>
+                            <td>{{ question.question }}</td>
+                            <td>
+                                <ul>
+                                    {% for testcase in question.testcases %}
+                                    <li>{{ testcase.input }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for testcase in question.testcases %}
+                                    <li>{{ testcase.output }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>{{ question.language }}</td>
+                            <td>
+                                <a href="{{ url_for('solve_question', question_id=question._id) }}" class="btn btn-primary btn-sm">Solve</a>
+                            </td>
+                            <td>
+                                <form action="{{ url_for('edit_quesion', record_id=question._id) }}" method="POST">
+                                    <button class="btn btn-primary btn-sm" type="submit">Edit</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{{ url_for('delete_quesion', record_id=question._id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
+                                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">No questions found</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Button to add a new question -->
+        
+    </div>
+
+    <!-- Script to filter the questions dynamically -->
+    <script>
+        function filterQuestions() {
+            const input = document.getElementById('search').value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const questionText = row.cells[1].textContent.toLowerCase();
+                row.style.display = questionText.includes(input) ? '' : 'none';
+            });
+        }
+    </script>
+
+    <!-- Bootstrap JS for improved interactivity -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Question</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Update Question</h1>
+
+        <form action="{{ url_for('update_quesion', record_id=quesion['_id']) }}" method="POST" id="addQuestionForm">
+
+            <!-- CSRF Token for security -->
+
+            <!-- Question input -->
+            <div class="mb-3">
+                <label for="question" class="form-label">Question:</label>
+                <textarea name="question" id="question" class="form-control" rows="3" required>{{ quesion['question'] }}</textarea>
+            </div>
+
+            <!-- Test cases container for adding dynamic test cases -->
+            <div id="testcases-container" class="mb-3">
+                <label class="form-label">Test Cases:</label>
+                <div class="testcase">
+                    {% for testcase in quesion['testcases'] %}
+                        <div class="mb-2">
+                            <label for="testcase_input" class="form-label">Testcase Input:</label>
+                            <textarea name="testcase_input[]" class="form-control testcase_input" required>{{ testcase['input'] }}</textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="testcase_output" class="form-label">Testcase Output:</label>
+                            <textarea name="testcase_output[]" class="form-control testcase_output" required>{{ testcase['output'] }}</textarea>
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Test Case Category:</label>
+                            <select name="category[]" class="form-select" required>
+                                <option value="normal" name="category[]">Normal Case</option>
+                                <option value="edge" name="category[]">Edge Case</option>
+                                <option value="performance" name="category[]">Performance Test</option>
+                            </select>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Add more test cases dynamically -->
+            <button type="button" class="btn btn-secondary mb-3" onclick="addTestCase()">Add Another Test Case</button>
+
+            <!-- Preview test cases -->
+            <button type="button" class="btn btn-info mb-3" onclick="previewTestCases()">Preview Test Cases</button>
+
+            <!-- Preview container -->
+            <div id="preview-container" class="table-responsive"></div>
+
+            <!-- Language input -->
+            <div class="mb-3">
+                <label for="language" class="form-label">Programming Language:</label>
+                <input type="text" name="language" id="language" value="{{ quesion['language']}}" class="form-control" required>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary">update Question</button>
+
+        <a href="{{ url_for('admin') }}" class="btn btn-secondary mt-3">Back to Question List</a>
+    </form>
+    </div>
+
+    <script>
+        // Function to dynamically add new test cases
+        function addTestCase() {
+            const testCaseDiv = document.createElement('div');
+            testCaseDiv.classList.add('testcase', 'mb-3');
+
+            testCaseDiv.innerHTML = `
+                <div class="mb-2">
+                    <label for="testcase_input" class="form-label">Testcase Input:</label>
+                    <textarea name="testcase_input[]" class="form-control testcase_input" required></textarea>
+                </div>
+                <div class="mb-2">
+                    <label for="testcase_output" class="form-label">Testcase Output:</label>
+                    <textarea name="testcase_output[]" class="form-control testcase_output" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Test Case Category:</label>
+                    <select name="category[]" class="form-select" required>
+                        <option value="normal">Normal Case</option>
+                        <option value="edge">Edge Case</option>
+                        <option value="performance">Performance Test</option>
+                    </select>
+                </div>
+            `;
+            document.getElementById('testcases-container').appendChild(testCaseDiv);
+        }
+
+        // Function to preview test cases
+        function previewTestCases() {
+            let previewContainer = document.getElementById('preview-container');
+            let testcases = document.querySelectorAll('.testcase');
+            let previewHTML = '<table class="table table-bordered"><thead><tr><th>Input</th><th>Output</th><th>Category</th></tr></thead><tbody>';
+            testcases.forEach(testcase => {
+                let input = testcase.querySelector('.testcase_input').value;
+                let output = testcase.querySelector('.testcase_output').value;
+                let category = testcase.querySelector('select[name="category[]"]').value;
+                previewHTML += `<tr><td>${input}</td><td>${output}</td><td>${category}</td></tr>`;
+            });
+            previewHTML += '</tbody></table>';
+            previewContainer.innerHTML = previewHTML;
+        }
+    </script>
+
+    <!-- Bootstrap JS for better UI -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

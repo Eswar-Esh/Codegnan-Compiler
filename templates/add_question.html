@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Coding Question</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f7f9;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        .form-section {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+        }
+        .form-section legend {
+            font-size: 1.2rem;
+            color: #004d6d;
+            padding: 0 10px;
+            font-weight: bold;
+        }
+        #preview-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Add a New Coding Question</h1>
+
+        <form action="{{ url_for('add_question') }}" method="POST" id="addQuestionForm">
+
+            <!-- Question Details Section -->
+            <fieldset class="form-section">
+                <legend>Question Details</legend>
+                <div class="mb-3">
+                    <label for="question" class="form-label">Question Description:</label>
+                    <textarea name="question" id="question" class="form-control" rows="3" required placeholder="Enter the problem statement..."></textarea>
+                </div>
+            </fieldset>
+
+            <!-- Programming Language Section -->
+            <fieldset class="form-section">
+                <legend>Programming Language</legend>
+                <input type="text" name="language" id="language" class="form-control" required placeholder="e.g., Python, JavaScript, C++">
+            </fieldset>
+
+            <!-- Test Cases Section -->
+            <fieldset class="form-section">
+                <legend>Test Cases</legend>
+                <div id="testcases-container" class="mb-3">
+                    <!-- Initial Test Case Block -->
+                    <div class="testcase">
+                        <div class="mb-2">
+                            <label for="testcase_input" class="form-label">Testcase Input:</label>
+                            <textarea name="testcase_input[]" class="form-control" required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="testcase_output" class="form-label">Expected Output:</label>
+                            <textarea name="testcase_output[]" class="form-control" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Test Case Category:</label>
+                            <select name="category[]" class="form-select" required>
+                                <option value="normal">Normal Case</option>
+                                <option value="edge">Edge Case</option>
+                                <option value="performance">Performance Test</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons to Add or Preview Test Cases -->
+                <button type="button" class="btn btn-secondary" onclick="addTestCase()">Add Another Test Case</button>
+                <button type="button" class="btn btn-info" onclick="previewTestCases()">Preview Test Cases</button>
+            </fieldset>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Add Question</button>
+        </form>
+
+        <!-- Preview Container -->
+        <div id="preview-container" class="table-responsive">
+            <h3>Test Case Preview</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Input</th>
+                        <th>Expected Output</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody id="preview-table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- JavaScript for Dynamic Test Case Handling -->
+    <script>
+        // Function to dynamically add new test cases
+        function addTestCase() {
+            const testCaseDiv = document.createElement('div');
+            testCaseDiv.classList.add('testcase', 'mb-3');
+
+            testCaseDiv.innerHTML = `
+                <div class="mb-2">
+                    <label for="testcase_input" class="form-label">Testcase Input:</label>
+                    <textarea name="testcase_input[]" class="form-control" required></textarea>
+                </div>
+                <div class="mb-2">
+                    <label for="testcase_output" class="form-label">Expected Output:</label>
+                    <textarea name="testcase_output[]" class="form-control" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Test Case Category:</label>
+                    <select name="category[]" class="form-select" required>
+                        <option value="normal">Normal Case</option>
+                        <option value="edge">Edge Case</option>
+                        <option value="performance">Performance Test</option>
+                    </select>
+                </div>
+            `;
+            document.getElementById('testcases-container').appendChild(testCaseDiv);
+        }
+
+        // Function to preview test cases before submitting
+        function previewTestCases() {
+            const previewContainer = document.getElementById('preview-container');
+            const previewTableBody = document.getElementById('preview-table-body');
+            previewTableBody.innerHTML = '';
+
+            // Collect test cases
+            const testcases = document.querySelectorAll('.testcase');
+            testcases.forEach(testcase => {
+                const input = testcase.querySelector('textarea[name="testcase_input[]"]').value || 'N/A';
+                const output = testcase.querySelector('textarea[name="testcase_output[]"]').value || 'N/A';
+                const category = testcase.querySelector('select[name="category[]"]').value || 'N/A';
+
+                // Add rows to the preview table
+                const row = `<tr>
+                    <td>${input}</td>
+                    <td>${output}</td>
+                    <td>${category}</td>
+                </tr>`;
+                previewTableBody.insertAdjacentHTML('beforeend', row);
+            });
+
+            // Show the preview container
+            previewContainer.style.display = 'block';
+        }
+    </script>
+
+    <!-- Bootstrap JS for better interactivity -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

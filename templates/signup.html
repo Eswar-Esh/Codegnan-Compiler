@@ -1,0 +1,206 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+</head>
+<body><center>
+    <h2>This is my Sigup page</h2>
+    <form  method="post">
+        <label >Fullname:</label><br>
+        <input type="text" id="username" name="fullname" placeholder="your Fullname" required><br><br>
+
+        <label >Username:</label><br>
+        <input type="text" id="username" name="username" placeholder="your name" required><br><br>
+
+        <label >Phone Number:</label><br>
+        <input type="number" id="number" name="phno" placeholder="your phoneNumber" required><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" placeholder="Your gmail" required><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" placeholder="your Password"  required><br><br>
+
+        <label for="confirm_password">Confirm Password:</label><br>
+        <input type="password" id="confirm_password" name="confirm_pwd" placeholder="confirm your password" required><br><br>
+
+        <input type="submit" value="Sign Up">
+        <button> <a href="{{ url_for('login')}}">Login </a></button>
+    </form>
+</center>
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f9fc;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 80px;
+        }
+
+        /* Logo in the upper-left corner */
+        .logo-container {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            
+        }
+
+        .logo {
+            height: 50px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 45%;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a4a4a;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #4a90e2;
+        }
+
+        /* Full-width button */
+        input[type="submit"] {
+            max-width: 200px;
+            background-color: #00bcd4;
+            color: #ffffff;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0097a7;
+            transform: scale(1.02);
+        }
+
+        /* Footer with login link */
+        .form-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .form-footer a {
+            color: #00bcd4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo container in the upper-left -->
+    <div class="logo-container">
+        <img src="{{url_for('static', filename='images/logo.png')}}" alt="Company Logo" class="logo">
+    </div>
+
+    <!-- Signup form -->
+    <h2>Signup</h2>
+    <form method="post">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="fullname">Fullname:</label>
+                <input type="text" id="fullname" name="fullname" placeholder="Your Fullname" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Your Username" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="phno">Phone Number:</label>
+                <input type="number" id="phno" name="phno" placeholder="Your Phone Number" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Your Password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_pwd" placeholder="Confirm Your Password" required>
+            </div>
+        </div>
+        <input type="submit" value="Sign Up">
+    </form>
+    <div class="form-footer">
+        <p>Already have an account?   <a href="{{ url_for('login')}}">Login here</a></p>
+    </div>
+</body>
+</html>
